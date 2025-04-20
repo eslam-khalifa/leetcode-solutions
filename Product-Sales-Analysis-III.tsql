@@ -1,0 +1,7 @@
+select product_id, first_year, sum(quantity) as quantity, price as price
+from (
+    select product_id, year as first_year, quantity, price, dense_rank() over (partition by product_id order by year) as rnk
+    from sales
+) as tbl
+where rnk = 1
+group by product_id, first_year, price
