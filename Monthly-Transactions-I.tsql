@@ -1,0 +1,20 @@
+/* Write your T-SQL query statement below */
+select concat(year(trans_date), '-', right('0'+cast(month(trans_date) as varchar), 2)) as month, country, (
+    select isnull(count(*), 0)
+    from transactions
+    where (country = t.country or t.country is null and country is null) and concat(year(trans_date), '-', right('0'+cast(month(trans_date) as varchar), 2)) = concat(year(t.trans_date), '-', right('0'+cast(month(t.trans_date) as varchar), 2))
+) as trans_count, (
+    select isnull(count(*), 0)
+    from transactions
+    where (country = t.country or t.country is null and country is null) and concat(year(trans_date), '-', right('0'+cast(month(trans_date) as varchar), 2)) = concat(year(t.trans_date), '-', right('0'+cast(month(t.trans_date) as varchar), 2)) and state = 'approved'
+) as approved_count, (
+    select isnull(sum(amount), 0)
+    from transactions
+    where (country = t.country or t.country is null and country is null) and concat(year(trans_date), '-', right('0'+cast(month(trans_date) as varchar), 2)) = concat(year(t.trans_date), '-', right('0'+cast(month(t.trans_date) as varchar), 2))
+) as trans_total_amount, (
+    select isnull(sum(amount), 0)
+    from transactions
+    where (country = t.country or t.country is null and country is null) and concat(year(trans_date), '-', right('0'+cast(month(trans_date) as varchar), 2)) = concat(year(t.trans_date), '-', right('0'+cast(month(t.trans_date) as varchar), 2)) and state = 'approved'
+) as approved_total_amount
+from transactions t
+group by year(trans_date), month(trans_date), country
