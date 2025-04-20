@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+select customer_id
+from (
+    select customer_id, count(product_key) as counted
+    from(
+        select *
+        from customer c
+        group by customer_id, product_key
+    ) as tbl
+    group by customer_id
+) as tbl1
+where counted = (select count(*) from product)
