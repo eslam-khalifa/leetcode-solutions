@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+select (select top 1 salary as SecondHighestSalary
+from (
+    select *, dense_rank() over(order by salary desc) as d
+    from employee
+) as dd
+where dd.d = 2
+order by salary desc) as SecondHighestSalary
