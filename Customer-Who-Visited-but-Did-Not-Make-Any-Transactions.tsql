@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+select tablee.customer_id, count(tablee.customer_id) as count_no_trans
+from (
+select visit_id, customer_id
+from visits
+except
+select distinct visits.visit_id, visits.customer_id
+from transactions
+inner join visits
+on transactions.visit_id = visits.visit_id
+) as tablee
+group by tablee.customer_id
