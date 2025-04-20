@@ -1,0 +1,12 @@
+/* Write your T-SQL query statement below */
+select Department, Employee, Salary
+from (
+    select *
+    from (
+        select d.name as Department, e.name as Employee, e.salary as Salary, dense_rank() over (partition by d.name order by e.salary desc) as rnk
+        from employee e
+        join department d
+        on e.departmentId = d.id
+    ) as tbl1
+    where rnk in (1, 2, 3)
+) as tbl2
