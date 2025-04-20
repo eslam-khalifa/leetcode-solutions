@@ -1,0 +1,11 @@
+/* Write your T-SQL query statement below */
+select top 1 tbl1.id, count(tbl1.id) as num
+from (
+    select requester_id as id
+    from RequestAccepted
+    union all
+    select accepter_id
+    from RequestAccepted
+) as tbl1
+group by tbl1.id
+order by num desc
