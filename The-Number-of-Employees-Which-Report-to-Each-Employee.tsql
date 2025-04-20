@@ -1,0 +1,7 @@
+/* Write your T-SQL query statement below */
+select ee.employee_id, ee.name, count(ee.employee_id) as reports_count, round(avg(cast(e.age as float)), 0) as average_age
+from employees e
+join employees ee
+on e.reports_to = ee.employee_id
+group by ee.employee_id, ee.name
+order by ee.employee_id
