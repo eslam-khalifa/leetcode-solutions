@@ -1,0 +1,19 @@
+select round(
+    (
+        select count(distinct a1.player_id)
+        from activity a1
+        join activity a2
+        on a1.player_id = a2.player_id and a2.event_date = dateadd(day, 1, 
+            (
+                select top 1 event_date
+                from activity
+                where player_id = a1.player_id
+                order by event_date
+            )
+        )
+    ) * 1.0
+    /
+    (
+        select count(distinct player_id) from activity
+    )
+, 2) as fraction
