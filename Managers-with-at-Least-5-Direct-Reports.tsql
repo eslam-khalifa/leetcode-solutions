@@ -1,0 +1,8 @@
+/* Write your T-SQL query statement below */
+SELECT e.name
+FROM employee e
+WHERE (
+    SELECT COUNT(*)
+    FROM employee sub
+    WHERE sub.managerId = e.id
+) >= 5;
