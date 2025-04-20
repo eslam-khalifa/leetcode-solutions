@@ -1,0 +1,20 @@
+/* Write your T-SQL query statement below */
+select tablee.category, count(tbl.category) as accounts_count
+from (
+    select
+    case
+    when income < 20000 then 'Low Salary'
+    when income >= 20000 and income <= 50000 then 'Average Salary'
+    when income > 50000 then 'High Salary'
+    end as category
+    from accounts
+) as tbl
+right join (
+    select 'Low Salary' as category
+    union
+    select 'Average Salary'
+    union
+    select 'High Salary'
+) as tablee
+on tbl.category = tablee.category
+group by tablee.category
