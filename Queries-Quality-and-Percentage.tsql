@@ -1,0 +1,6 @@
+/* Write your T-SQL query statement below */
+select q.query_name, round(avg(cast(rating as float) / q.position), 2) as quality, (
+    round((select cast(count(rating) as float) from queries where rating < 3 and query_name = q.query_name) / count(*) * 100, 2)
+) as poor_query_percentage
+from queries q
+group by q.query_name
