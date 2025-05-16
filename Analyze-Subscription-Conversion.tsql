@@ -1,0 +1,9 @@
+select *
+from (
+    select user_id,
+        isnull(round(avg(case when activity_type = 'free_trial' then cast(activity_duration as float) end), 2), 0) as trial_avg_duration,
+        isnull(round(avg(case when activity_type = 'paid' then cast(activity_duration as float) end), 2), 0) as paid_avg_duration
+    from userActivity
+    group by user_id
+) as tbl
+where trial_avg_duration <> 0 and paid_avg_duration <> 0
